@@ -1,24 +1,21 @@
 const express = require("express");
+
 const app = express();
 
-app.get("/user", (req, res) => {
-    res.send({
-        firstName: "Ayush",
-        lastName: "Raut"
-    })
-})
+app.use(
+  ["/user", "/userId"],
+  [
+    (req, res, next) => {
+      console.log("This is the route");
+      res.send("This is the after second first");
+    },
+    (req, res) => {
+      console.log("This is the second router");
+      res.send("This is comming from the second route hadler");
+    },
+  ]
+);
 
-app.post("/user", (req, res) => {
-    res.send("You have succesfully updated the DB");
-})
-
-app.delete("/user", (req, res) => {
-    res.send("You are deleting the resources!")
-})
-
-app.use("/", (req, res) => {
-    console.log("This works!");
-    res.send("Hello from Express!"); // respond to the client
+app.listen(3000, () => {
+  console.log("The server set up to the port 3000");
 });
-
-app.listen(7777);
